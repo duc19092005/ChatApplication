@@ -1,0 +1,79 @@
+# -----------------------------------------------------------------------------
+# 1. Các Thư mục và File Build/Output (PHẢI LOẠI TRỪ)
+# -----------------------------------------------------------------------------
+
+# Thư mục chứa các gói đã biên dịch từ TypeScript/Babel (Backend)
+dist/
+build/
+out/
+tmp/
+*.tsbuildinfo
+
+# Thư mục build/output của Frontend React (do Webpack, Vite, v.v. tạo ra)
+# Tên thư mục phổ biến:
+# Vercel/Netlify/Heroku thường dùng 'build' hoặc 'dist', nhưng React thường dùng 'build'
+# nếu dùng Create React App (CRA), hoặc 'dist' nếu dùng Vite.
+.parcel-cache/
+public/dist/
+*.log
+
+# -----------------------------------------------------------------------------
+# 2. Dependencies (PHẢI LOẠI TRỪ)
+# -----------------------------------------------------------------------------
+
+# Thư mục Node.js dependencies cho cả Backend và Frontend
+node_modules
+/node_modules
+.npm
+.yarn-integrity
+.pnp.*
+
+# -----------------------------------------------------------------------------
+# 3. File Cấu hình Riêng tư và Môi trường (CẢM THẤY RIÊNG TƯ)
+# -----------------------------------------------------------------------------
+
+# File biến môi trường (chứa keys, passwords, v.v.)
+.env
+.env.local
+.env.*.local
+
+# File bí mật (ví dụ: các khóa ssh hoặc token)
+*.pem
+*.key
+
+# -----------------------------------------------------------------------------
+# 4. Logs, Cache và Crash Reports
+# -----------------------------------------------------------------------------
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Crash files
+*.sql
+*.sqlite
+.sqlite
+
+# -----------------------------------------------------------------------------
+# 5. Cấu hình Editor/IDE (Được khuyến nghị loại trừ)
+# -----------------------------------------------------------------------------
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history
+
+# IntelliJ/Webstorm (hoặc các IDE khác của JetBrains)
+.idea
+*.iml
+
+# Các file tạm thời của macOS
+.DS_Store
+
+# Các file tạm thời của Windows
+Thumbs.db
