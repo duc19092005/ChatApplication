@@ -18,16 +18,58 @@ wssConnection.on("connection" , function(ws : any, req : any)
         ws.close(1008, 'Missing user ID for identification.'); 
         return;
     }
+
+    /*
+        Params để gửi có cấu trúc như sau
+
+        {
+            "to_user_id" : [
+                "Mã User1",
+                "Mã User2"
+            ] ,
+            "content" : "Tin Nhắn cần gửi"
+        }
+    */
      ws.on('message', function incoming(message : string) {
         try {
             const data = JSON.parse(message);
             
             if (data.to_user_id && data.content) {
-                
-                const targetWs = userConnection.get(data.to_user_id);
-                
-                if (targetWs && targetWs.readyState === WebSocket.OPEN) {
+                if(data.to_user_id.length > 1)
+                {
+                                    console.log("U has Pass this")
+
+                    const targetWsArray : ws[] = []
+                    const targetUserId : string [] = data.to_user_id;
+                    targetUserId.forEach(element => {
+                        const userWs =
+                            userConnection.get(element)
+                        if(userWs)
+                        {
+                            targetWsArray.push(userWs);
+                        }else{
+                            console.log("Error Can not Find User")
+                        }
+                    });
+
+                    // Send Message To User
+
+                    targetWsArray.forEach(wsUser => {
+                        // Connect to user
+
+                        const outgoingMessage = JSON.stringify({
+                            type: 'INCOMING_MESSAGE',
+                            from_user_id: userId, 
+                            content: data.content
+                        });
+
+                        wsUser.send(outgoingMessage)
+                    })
+
                     
+                }else if(data.to_user_id.length == 1){
+                     const targetWs = userConnection.get(data.to_user_id[0]);
+                    if (targetWs && targetWs.readyState === WebSocket.OPEN) {
                     const outgoingMessage = JSON.stringify({
                         type: 'INCOMING_MESSAGE',
                         from_user_id: userId, 
@@ -36,9 +78,10 @@ wssConnection.on("connection" , function(ws : any, req : any)
                     
                     targetWs.send(outgoingMessage);
                     console.log(`➡️ Sent message from ${userId} to ${data.to_user_id}`);
-                } else {
-                    // Đây là trong trường hợp nếu Connection Của người nhận Offline thì sẽ tiến hành 
-                    // Lưu trong Database , DB là mongoDB
+                    } else {
+                        // Đây là trong trường hợp nếu Connection Của người nhận Offline thì sẽ tiến hành 
+                        // Lưu trong Database , DB là mongoDB
+                    }
                 }
             }
         } catch (e : any) {
