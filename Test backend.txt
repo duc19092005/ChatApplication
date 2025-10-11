@@ -14,3 +14,6 @@ curl -X GET http://localhost:8080/api/chat/messages -H "Authorization: Bearer <u
 
 WEBSOCKET:
 wscat -c "ws://localhost:8080?token=<user_token>"
+
+Test with frontend(at root):
+pnpm start
