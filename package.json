@@ -1,0 +1,10 @@
+{
+  "name": "chat-app",
+  "scripts": {
+    "start": "concurrently \"cd backend && pnpm start\" \"cd frontend && pnpm start\"",
+    "build": "pnpm -r build"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

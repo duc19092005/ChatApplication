@@ -1,10 +1,17 @@
 #set page(
   paper: "a4",
   margin: (x: 1.8cm, y: 1.5cm),
+  footer: context[
+    #text(fill: gray)[*Trường Đại Học Ngoại Ngữ và Tin Học*]
+  #h(1fr)
+  #counter(page).display(
+    "1/1",
+    both: true,
+  )
+  ]
 )
-
 #set par(
-  justify: true,
+  justify: false,
   leading: 0.52em,
   first-line-indent: (amount: 1em, all: true,),
 )
@@ -13,7 +20,24 @@
   size:12pt,
 )
 
-#set heading(numbering: "I.")
+#set heading(numbering: (..nums) => {
+   // We want the positional arguments
+   // from `nums`.
+   // `numbers` is now an array of ints
+   // e.g. a level one heading `= ...`  could be (1,)
+   // e.g. a level two heading `== ...` could be (2, 1)
+   // e.g. a level three heading `=== ...` could be (1, 0, 2)
+   let numbers = nums.pos()
+   // Top level (level 1) headings will have a single
+   // int like (1,), as mentioned above. So we check
+   // if the array's length is 1 for level one headings.
+   if numbers.len() == 1 {
+      numbering("I.", ..numbers)
+   } else {
+      // Everything else
+      numbering("1.", ..numbers) 
+   }
+})
 
 #set enum(numbering: "1.a.")
 
@@ -50,7 +74,8 @@
 #figure(
   image("HUFLIT.png", width: 30%)
 )
-#align(center, text(20pt, font: "Roboto")[
+#align(center, text(25pt, font: "cambria")[
+*BÁO CÁO ĐỀ TÀI* \
 *CÔNG NGHỆ PHẦN MỀM NÂNG CAO - THỰC HÀNH* \
 *ĐỀ TÀI: CHAT APPLICATION*
 ])
@@ -69,11 +94,21 @@ Nhóm 12:
   [Đỗ Hoàng Minh Trí], [23DH113733],
   [Dương Thế Hiệp], [23DH114911],
 )
+#pagebreak()
+
+#show outline: it => {
+  show heading: set align(center)
+  it
+}
+
+#outline()
+
+#pagebreak()
 
 
 = Giới thiệu
 Chat Application như cái tên là một website chat đơn giản
-được xây dựng trên Node.js, Expressjs và Socket.io giúp cho người dùng
+được xây dựng bằng Node.js, Expressjs, Websocket và Reactjs giúp cho người dùng
 đã có tài khoản có thể tham gia chat với một người hoặc một
 nhóm người khác
 
@@ -107,6 +142,11 @@ Mục tiêu của hệ thống này là để cung cấp kinh nghiệm làm vi�
   [20], [Yêu cầu đăng ký là gì?], [Chỉ cần tên người dùng, Email và mật khẩu],
   [21], [Lời nhắn có tương tác như thả emoji hay pin tin nhắn không], [Không]
 )
+== Bảng báo giá
+#table(
+  columns: 3,
+  [], [], [], 
+)
 = Yêu cầu hệ thống
 + Chức năng
 _Admin: Người quản trị hệ thống_
@@ -128,10 +168,10 @@ _Chatter: Người dùng đã có tài khoản_
   [11], [Đăng xuất], x, x, [],
   [12], [Chặn user], x, x, [],
   [13], [Mời người vào nhóm], x, x, [],
-  [14], [Sửa mật khẩu],[],  x, [],
+  [14], [Lấy lại mật khẩu],[],  x, [],
   [15], [Xác thực 2 lớp] , [], x, [],
-  [16], 
 )
+
 + Phi chức năng
   + perfomance
   + security
@@ -139,18 +179,19 @@ _Chatter: Người dùng đã có tài khoản_
   + scalability
 
 = System architecture
-+ Technology stack
+== Technology stack
   + Backend
     - Ngôn ngữ: Javascript, Typescript
     - Môi trường: Node.js
     - Framework: Expressjs
   + Frontend
-    - Ngôn ngữ: Javascript
+    - Ngôn ngữ: Javascript, CSS, html2
     - Thư viện: Reactjs
   + Database
     - MongoDB  
   + Authentication
     - jwt
+  + API: Websocket
 
 = Component design
 
